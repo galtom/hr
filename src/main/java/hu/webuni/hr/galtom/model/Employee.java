@@ -2,12 +2,20 @@ package hu.webuni.hr.galtom.model;
 
 import java.time.LocalDateTime;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public class Employee {
 	private Long id;
 	private String name;
 	private String position;
 	private int salary;
+	
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private LocalDateTime startDate;
+	
+	public Employee() {}
 	
 	public Employee(Long id, String name, String position, int salary, LocalDateTime startDate) {
 		this.id = id;
