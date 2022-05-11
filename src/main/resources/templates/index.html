@@ -3,18 +3,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Employee application</title>
-	<style>
-		.employee {
-			margin-bottom: 2rem;
-		}
-		.field {
-			margin: 0.5rem 0rem;
-		}
-		.field label {
-			display: block;
-		}
-
-	</style>
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
 	<link rel="stylesheet" th:href="@{/vendor/datetimepicker/jquery.datetimepicker.min.css}" />
 	<script th:src="@{/vendor/jquery/jquery.min.js}"></script>
 	<script th:src="@{/vendor/datetimepicker/jquery.datetimepicker.full.min.js}"></script>
@@ -24,7 +13,7 @@
 
 <h1>Employee application</h1>
 
-<table class="employee">
+<table class="styled-table">
 	<thead>
 		<tr>
 			<th>ID</th>
@@ -49,36 +38,31 @@
 <form method="POST" th:action="@{/}" th:object="${newEmployee}">
 	
 	<div class="field">
-		<label for="id">ID:</label>
+		<label for="id">ID</label>
 		<input id="id" th:field="*{id}" />
 	</div>
 	
 	<div class="field">
-		<label for="name">Name:</label>
+		<label for="name">Name</label>
 		<input id="name" th:field="*{name}" />
 	</div>
 	
 	<div class="field">
-		<label for="position">Position:</label>
+		<label for="position">Position</label>
 		<input id="position" th:field="*{position}" />
 	</div>
 	
 	<div class="field">
-		<label for="salary">Salary:</label>
+		<label for="salary">Salary</label>
 		<input id="salary" th:field="*{salary}" />
 	</div>
 	
 	<div class="field">
-		<label for="startDate">Start Date:</label>
+		<label for="startDate">Start Date</label>
 		<input id="startDate" th:field="*{startDate}"  />
-		<p>
-			<small>Firefox 100 és Chrome 100 verziók fölött ki lehet választani. <br/>
-				   Más böngészőkben a formátum: "2020-01-01T08:00:00"
-			</small>
-		</p>
 	</div>
 	
-	<button type="submit">Add</button>
+	<button type="submit">Save</button>
 </form>
 
 

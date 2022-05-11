@@ -1,11 +1,11 @@
-package hu.webuni.hr.galtom.model;
+package hu.webuni.hr.galtom.dto;
 
 import java.time.LocalDateTime;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+public class EmployeeDto {
 
-public class Employee {
 	private Long id;
 	private String name;
 	private String position;
@@ -13,9 +13,9 @@ public class Employee {
 	
 	private LocalDateTime startDate;
 	
-	public Employee() {}
+	public EmployeeDto() {}
 	
-	public Employee(Long id, String name, String position, int salary, LocalDateTime startDate) {
+	public EmployeeDto(Long id, String name, String position, int salary, LocalDateTime startDate) {
 		this.id = id;
 		this.name = name;
 		this.position = position;
