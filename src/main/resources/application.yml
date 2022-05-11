@@ -1,0 +1,17 @@
+spring:
+  profiles:
+    active:
+    - smart
+
+hr:
+  salary:
+    payraise:
+      -
+        years: 2.5
+        percent: 5
+      -
+        years: 5
+        percent: 10
+      -
+        years: 10
+        percent: 20
