@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -30,6 +31,7 @@ public class EmployeeController {
 		employees.put(2L, new EmployeeDto(2L, "Buz Lightyear", "Astronaut", 1_000_000, LocalDateTime.parse("1996-03-28T08:00:00")));
 	}
 	
+	@SuppressWarnings(value = { "unused" })
 	private List<EmployeeDto> filterSaralyIfMoreThan(int salary) {
 		List<EmployeeDto> filteredEmployees = new ArrayList<>();
 		
@@ -41,10 +43,14 @@ public class EmployeeController {
 		return filteredEmployees;
 	}
 	
+	private List<EmployeeDto> filterSaralyIfMoreThanWithStream(int salary) {
+		return employees.values().stream().filter(emply -> emply.getSalary() > salary).collect(Collectors.toList());
+	}
+	
 	@GetMapping
 	public List<EmployeeDto> getAll(@RequestParam(name = "salary", required = false) Integer salary) {
 		if (salary != null)
-			return filterSaralyIfMoreThan(salary);
+			return filterSaralyIfMoreThanWithStream(salary);
 			
 		return new ArrayList<>(employees.values());
 	}

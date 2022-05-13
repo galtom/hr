@@ -2,8 +2,6 @@ package hu.webuni.hr.galtom.model;
 
 import java.time.LocalDateTime;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 
 public class Employee {
 	private Long id;
