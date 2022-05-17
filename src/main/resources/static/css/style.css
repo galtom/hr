@@ -1,3 +1,14 @@
+a {
+	color: blue;
+}
+a:visited {
+	color: blue;
+}
+
+form {
+	margin: 20px 0px;
+}
+
 /* .styled-table credit: https://dev.to/dcodeyt/creating-beautiful-html-tables-with-css-428l */
 .styled-table {
 	margin-bottom: 2rem;

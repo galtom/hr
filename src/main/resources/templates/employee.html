@@ -11,38 +11,13 @@
 </head>
 <body>
 
-<h1>Employee application</h1>
+<h1>Edit Employee Data: <span th:text="${employee.name + ' (ID: ' + employee.id + ')'}"></span></h1>
 
-<table class="styled-table">
-	<thead>
-		<tr>
-			<th>ID</th>
-			<th>Name</th>
-			<th>Position</th>
-			<th>Salary</th>
-			<th>Start Date</th>
-			<th>Action</th>
-		</tr>
-	</thead>
-	
-	<tbody>
-		<tr th:each="employee : ${employees}">
-			<td th:text="${employee.id}">1</td>
-			<td><a th:href="@{/employee/{id}(id=${employee.id})}" th:text="${employee.name}">John Doe</a></td>
-			<td th:text="${employee.position}">IT</td>
-			<td th:text="${employee.salary}">90k</td>
-			<td th:text="${employee.startDate}">2020-01-01T08:00:00</td>
-			<td><a th:href="@{/employee/delete/{id}(id=${employee.id})}">Töröl</a></td>
-		</tr>
-	</tbody>
-</table>
+<a href="/">Back to Employees list</a>
 
-<form method="POST" th:action="@{/}" th:object="${newEmployee}">
+<form method="POST" th:action="@{/employee/{id}(id=${employee.id})}" th:object="${employee}">
 	
-	<div class="field">
-		<label for="id">ID</label>
-		<input id="id" th:field="*{id}" />
-	</div>
+	<input type="hidden" th:field="*{id}" />
 	
 	<div class="field">
 		<label for="name">Name</label>
@@ -63,7 +38,7 @@
 		<label for="startDate">Start Date</label>
 		<input id="startDate" th:field="*{startDate}"  />
 	</div>
-	
+
 	<button type="submit">Save</button>
 </form>
 
