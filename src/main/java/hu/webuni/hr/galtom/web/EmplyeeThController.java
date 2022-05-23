@@ -18,13 +18,6 @@ import hu.webuni.hr.galtom.model.Employee;
 @Controller
 public class EmplyeeThController {
 	
-//	private Map<Long, Employee> employees = new HashMap<>();
-//	
-//	{
-//		employees.put(1L, new Employee(1L, "Woody", "sheriff", 1_000, LocalDateTime.parse("1996-03-28T08:00:00")));
-//		employees.put(2L, new Employee(2L, "Buz Lightyear", "Astronaut", 1_000_000, LocalDateTime.parse("1996-03-28T08:00:00")));
-//	}
-	
 	private List<Employee> employees = new ArrayList<>();
 	
 	{

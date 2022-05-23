@@ -6,11 +6,19 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import hu.webuni.hr.galtom.dto.CompanyDto;
@@ -44,6 +52,17 @@ public class CompanyController {
 		return new ArrayList<>(companies.values());
 	}
 	
+	@GetMapping(params = "full")
+	public List<CompanyDto> getAll(@RequestParam boolean full) {
+		
+		if (!full) {
+			return companies.values().stream().map(c -> new CompanyDto(c.getId(), c.getRegistrationNumber(), c.getName(), c.getAddress())).collect(Collectors.toList());
+		}
+			
+		return getAll();
+	}
+	
+	
 	@GetMapping("/{id}")
 	public ResponseEntity<CompanyDto> getOne(@PathVariable long id) {
 		CompanyDto company = companies.get(id);
@@ -54,5 +73,45 @@ public class CompanyController {
 		return ResponseEntity.ok(company);
 	}
 	
+	@PostMapping
+	public ResponseEntity<CompanyDto> addCompany(@RequestBody CompanyDto companyDto) {
+		if (companies.containsKey(companyDto.getId()))
+			return ResponseEntity.badRequest().build();
+		
+		companies.put(companyDto.getId(), companyDto);
+		
+		return ResponseEntity.ok(companyDto);
+	}
+	
+	@PutMapping("/{id}")
+	public ResponseEntity<CompanyDto> updateCompany(
+			@PathVariable Long id,
+			@RequestBody CompanyDto companyDto) {
+		
+		if (!companies.containsKey(id))
+			return ResponseEntity.notFound().build();
+		
+		companyDto.setId(id);
+		companies.put(id, companyDto);
+		return ResponseEntity.ok(companyDto);
+	}
+	
+	@DeleteMapping("/{id}")
+	public void deleteCompany(@PathVariable Long id) {
+		companies.remove(id);
+	}
+	
+	@PostMapping("/{id}/newemployee")
+	public EmployeeDto newEmployee(
+			@PathVariable long id,
+			@RequestBody EmployeeDto employeeDto) {
+		
+		CompanyDto companyDto = companies.get(id);
+		List<EmployeeDto> newEmployeesDto = companyDto.getEmployees();
+		newEmployeesDto.add(employeeDto);
+		companies.put(id, companyDto);
+		
+		return employeeDto;
+	}
 	
 }

@@ -9,7 +9,14 @@ public class CompanyDto {
 	private String address;
 	private List<EmployeeDto> employees;
 	
-	public CompanyDto(){
+	public CompanyDto() {
+	}
+	
+	public CompanyDto(Long id, String registrationNumber, String name, String address) {
+		this.id = id;
+		this.registrationNumber = registrationNumber;
+		this.name = name;
+		this.address = address;
 	}
 	
 	public CompanyDto(Long id, String registrationNumber, String name, String address, List<EmployeeDto> employees) {
