@@ -20,6 +20,14 @@ public class Employee {
 		this.salary = salary;
 		this.startDate = startDate;
 	}
+	
+	public Employee(Employee emply) {
+		this.id = emply.id;
+		this.name = emply.name;
+		this.position = emply.position;
+		this.salary = emply.salary;
+		this.startDate = emply.startDate;
+	}
 
 	public Long getId() {
 		return id;

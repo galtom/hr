@@ -7,7 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,4 +43,16 @@ public class CompanyController {
 	public List<CompanyDto> getAll() {
 		return new ArrayList<>(companies.values());
 	}
+	
+	@GetMapping("/{id}")
+	public ResponseEntity<CompanyDto> getOne(@PathVariable long id) {
+		CompanyDto company = companies.get(id);
+		
+		if (company == null)
+			return ResponseEntity.notFound().build();
+		
+		return ResponseEntity.ok(company);
+	}
+	
+	
 }

@@ -1,8 +1,12 @@
 package hu.webuni.hr.galtom.web;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,42 +18,54 @@ import hu.webuni.hr.galtom.model.Employee;
 @Controller
 public class EmplyeeThController {
 	
-	private Map<Long, Employee> employees = new HashMap<>();
+//	private Map<Long, Employee> employees = new HashMap<>();
+//	
+//	{
+//		employees.put(1L, new Employee(1L, "Woody", "sheriff", 1_000, LocalDateTime.parse("1996-03-28T08:00:00")));
+//		employees.put(2L, new Employee(2L, "Buz Lightyear", "Astronaut", 1_000_000, LocalDateTime.parse("1996-03-28T08:00:00")));
+//	}
+	
+	private List<Employee> employees = new ArrayList<>();
 	
 	{
-		employees.put(1L, new Employee(1L, "Woody", "sheriff", 1_000, LocalDateTime.parse("1996-03-28T08:00:00")));
-		employees.put(2L, new Employee(2L, "Buz Lightyear", "Astronaut", 1_000_000, LocalDateTime.parse("1996-03-28T08:00:00")));
+	employees.add(new Employee(1L, "Woody", "sheriff", 1_000, LocalDateTime.parse("1996-03-28T08:00:00")));
+	employees.add(new Employee(2L, "Buz Lightyear", "Astronaut", 1_000_000, LocalDateTime.parse("1996-03-28T08:00:00")));
 	}
 	
-	@GetMapping("/")
+	@GetMapping("/employees")
 	public String index(Map<String, Object> model) {
-		 model.put("employees", employees.values());
+		 model.put("employees", employees);
 		 model.put("newEmployee", new Employee());
 		 return "index";
 	}
 	
-	@PostMapping("/")
+	@PostMapping("/employees")
 	public String saveEmployee(Employee employee) {
-		employees.put(employee.getId(), employee);
-		return "redirect:/";
+		employees.add(employee);
+		return "redirect:/employee";
 	}
 	
-	@GetMapping("/employee/{id}")
+	@GetMapping("/employees/{id}")
 	public String getEmployee(Map<String, Object> model, @PathVariable long id) {
-		Employee emply = employees.get(id);		
+		Employee emply = employees.stream().filter(e -> e.getId().equals(id)).findFirst().orElse(null);		
 		model.put("employee", emply);
 		return "employee";
 	}
 	
-	@PostMapping("/employee/{id}")
+	@PostMapping("/employees/{id}")
 	public String updateEmployee(@PathVariable long id, Employee employee) {
-		employees.put(employee.getId(), employee);
-		return "redirect:/";
+		for(int i = 0; i < employees.size(); i++) {
+			if (employees.get(i).getId().equals(id)) {
+				employees.set(i, employee);
+				break;
+			}
+		}
+		return "redirect:/employee";
 	}
 	
-	@GetMapping("/employee/delete/{id}")
+	@GetMapping("/employees/delete/{id}")
 	public String removeEmployee(@PathVariable long id) {
-		employees.remove(id);
-		return "redirect:/";
+		employees.removeIf(e -> e.getId().equals(id));
+		return "redirect:/employee";
 	}
 }

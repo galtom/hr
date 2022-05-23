@@ -15,7 +15,7 @@
 
 <a href="/">Back to Employees list</a>
 
-<form method="POST" th:action="@{/employee/{id}(id=${employee.id})}" th:object="${employee}">
+<form method="POST" th:action="@{/employees/{id}(id=${employee.id})}" th:object="${employee}">
 	
 	<input type="hidden" th:field="*{id}" />
 	
