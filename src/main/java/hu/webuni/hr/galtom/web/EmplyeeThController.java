@@ -35,7 +35,7 @@ public class EmplyeeThController {
 	@PostMapping("/employees")
 	public String saveEmployee(Employee employee) {
 		employees.add(employee);
-		return "redirect:/employee";
+		return "redirect:/employees";
 	}
 	
 	@GetMapping("/employees/{id}")
@@ -53,12 +53,12 @@ public class EmplyeeThController {
 				break;
 			}
 		}
-		return "redirect:/employee";
+		return "redirect:/employees";
 	}
 	
 	@GetMapping("/employees/delete/{id}")
 	public String removeEmployee(@PathVariable long id) {
 		employees.removeIf(e -> e.getId().equals(id));
-		return "redirect:/employee";
+		return "redirect:/employees";
 	}
 }
