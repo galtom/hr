@@ -1,38 +1,26 @@
-package hu.webuni.hr.galtom.dto;
+package hu.webuni.hr.galtom.model;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonView;
-
-import hu.webuni.hr.galtom.dto.Views.BaseData;
-
-public class CompanyDto {
+public class Company {
 	
-	@JsonView(BaseData.class)
 	private Long id;
-	
-	@JsonView(BaseData.class)
 	private String registrationNumber;
-	
-	@JsonView(BaseData.class)
 	private String name;
-	
-	@JsonView(BaseData.class)
 	private String address;
+	private List<Employee> employees;
 	
-	private List<EmployeeDto> employees;
-	
-	public CompanyDto() {
+	public Company() {
 	}
 	
-	public CompanyDto(Long id, String registrationNumber, String name, String address) {
+	public Company(Long id, String registrationNumber, String name, String address) {
 		this.id = id;
 		this.registrationNumber = registrationNumber;
 		this.name = name;
 		this.address = address;
 	}
 	
-	public CompanyDto(Long id, String registrationNumber, String name, String address, List<EmployeeDto> employees) {
+	public Company(Long id, String registrationNumber, String name, String address, List<Employee> employees) {
 		this.id = id;
 		this.registrationNumber = registrationNumber;
 		this.name = name;
@@ -71,11 +59,11 @@ public class CompanyDto {
 		this.address = address;
 	}
 	
-	public List<EmployeeDto> getEmployees() {
+	public List<Employee> getEmployees() {
 		return employees;
 	}
 	
-	public void setEmployees(List<EmployeeDto> employees) {
+	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 	}
 }

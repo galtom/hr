@@ -1,11 +1,8 @@
 package hu.webuni.hr.galtom.service;
 
-import org.springframework.stereotype.Service;
-
 import hu.webuni.hr.galtom.model.Employee;
 
-@Service
-public class DefaultEmployeeService implements EmployeeService {
+public class DefaultEmployeeService extends AbstractEmployeeService {
 
 	@Override
 	public int getPayRaisePercent(Employee employee) {

@@ -2,13 +2,24 @@ package hu.webuni.hr.galtom.dto;
 
 import java.time.LocalDateTime;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Past;
+import javax.validation.constraints.Positive;
+
 public class EmployeeDto {
 
 	private Long id;
+	
+	@NotBlank
 	private String name;
+	
+	@NotBlank
 	private String position;
+	
+	@Positive
 	private int salary;
 	
+	@Past
 	private LocalDateTime startDate;
 	
 	public EmployeeDto() {}

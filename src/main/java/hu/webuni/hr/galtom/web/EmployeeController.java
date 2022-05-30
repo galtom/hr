@@ -1,13 +1,11 @@
 package hu.webuni.hr.galtom.web;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
-import org.springframework.http.ResponseEntity;
+import javax.validation.Valid;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,75 +15,59 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import hu.webuni.hr.galtom.dto.EmployeeDto;
+import hu.webuni.hr.galtom.mapper.EmployeeMapper;
+import hu.webuni.hr.galtom.model.Employee;
+import hu.webuni.hr.galtom.service.EmployeeService;
 
 @RestController
 @RequestMapping("/api/employees")
 public class EmployeeController {
 	
-	private Map<Long, EmployeeDto> employees = new HashMap<>();
+	@Autowired
+	EmployeeService employeeSrvc;
 	
-	{
-		employees.put(1L, new EmployeeDto(1L, "Woody", "sheriff", 1_000, LocalDateTime.parse("1996-03-28T08:00:00")));
-		employees.put(2L, new EmployeeDto(2L, "Buz Lightyear", "Astronaut", 1_000_000, LocalDateTime.parse("1996-03-28T08:00:00")));
-	}
-	
-	@SuppressWarnings(value = { "unused" })
-	private List<EmployeeDto> filterSaralyIfMoreThan(int salary) {
-		List<EmployeeDto> filteredEmployees = new ArrayList<>();
-		
-		for (EmployeeDto employeeDto : employees.values()) {
-			if (employeeDto.getSalary() > salary)
-				filteredEmployees.add(employeeDto);
-		}
-		
-		return filteredEmployees;
-	}
-	
-	private List<EmployeeDto> filterSaralyIfMoreThanWithStream(int salary) {
-		return employees.values().stream().filter(emply -> emply.getSalary() > salary).collect(Collectors.toList());
-	}
+	@Autowired
+	EmployeeMapper employeeMapper;
 	
 	@GetMapping
-	public List<EmployeeDto> getAll(@RequestParam(name = "salary", required = false) Integer salary) {
-		if (salary != null)
-			return filterSaralyIfMoreThanWithStream(salary);
-			
-		return new ArrayList<>(employees.values());
+	public List<EmployeeDto> getAll(@RequestParam(name = "salary", required = false, defaultValue = "") Integer salary) {
+		return employeeMapper.employeeToDtos(employeeSrvc.getAll(salary));
 	}
 	
 	@GetMapping("/{id}")
-	public ResponseEntity<EmployeeDto> getEmployee(@PathVariable Long id) {
-		EmployeeDto employee = employees.get(id);
+	public EmployeeDto getEmployee(@PathVariable Long id) {
+		Employee employee = employeeSrvc.findById(id);
 		
 		if (employee == null)
-			return ResponseEntity.notFound().build();
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
 		
-		return ResponseEntity.ok(employee);
+		return employeeMapper.employeeToDto(employee);
 	}
 	
 	@PostMapping
-	public EmployeeDto addEmployee(@RequestBody EmployeeDto employeeDto) {
-		employees.put(employeeDto.getId(), employeeDto);
+	public EmployeeDto addEmployee(@RequestBody @Valid EmployeeDto employeeDto) {
+		employeeSrvc.save(employeeMapper.dtoToEmployee(employeeDto));
 		return employeeDto;
 	}
 	
 	@PutMapping("/{id}")
-	public ResponseEntity<EmployeeDto> updateEmployee(
+	public EmployeeDto updateEmployee(
 			@PathVariable Long id,
-			@RequestBody EmployeeDto employeeDto) {
+			@RequestBody @Valid EmployeeDto employeeDto) {
 		
-		if (!employees.containsKey(id))
-			return ResponseEntity.notFound().build();
+		Employee employee = employeeSrvc.updateEmployee(id, employeeMapper.dtoToEmployee(employeeDto));
 		
-		employeeDto.setId(id);
-		employees.put(id, employeeDto);
-		return ResponseEntity.ok(employeeDto);
+		if (employee == null )
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		
+		return employeeMapper.employeeToDto(employee);
 	}
 	
 	@DeleteMapping("/{id}")
 	public void deleteEmployee(@PathVariable Long id) {
-		employees.remove(id);
+		employeeSrvc.removeEmployee(id);
 	}	
 }
