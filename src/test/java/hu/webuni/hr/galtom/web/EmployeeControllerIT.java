@@ -47,7 +47,7 @@ public class EmployeeControllerIT {
 	}
 	
 	@Test
-	void testThatEmplyEmpoloyeeNameShouldResultBadRequest() throws Exception {
+	void testThatOnNewEmpoloyeeEmptyNameShouldResultBadRequest() throws Exception {
 		EmployeeDto newEmployee = new EmployeeDto(5L, "", "Assistant", 2_000, LocalDateTime.parse("2020-03-28T08:00:00"));
 		
 		webTestClient.post()
